@@ -1,4 +1,4 @@
-namespace Web_app_android
+namespace WebAPI
 {
     public class WeatherForecast
     {
