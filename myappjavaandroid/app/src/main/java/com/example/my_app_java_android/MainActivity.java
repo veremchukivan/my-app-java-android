@@ -2,81 +2,30 @@ package com.example.my_app_java_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-
-import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private TextView txtOperations;
     private TextView txtResult;
     private boolean isNewOperation = false;
-    private ImageView imgAvatar;
     private String currentOperation = "";
-    private static final String BASE_URL = "https://spu123.itstep.click/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txtOperations = findViewById(R.id.txtOperations);
         txtResult = findViewById(R.id.txtResult);
-        imgAvatar = findViewById(R.id.imgAvatar);
-        GetCategories();
-        String url = "https://kovbasa.itstep.click/images/mala.jpeg";
-        Glide
-                .with(this)
-                .load(url)
-                .apply(new RequestOptions().override(600))
-                .into(imgAvatar);
     }
 
-    public void GetCategories()
-    {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        CategoryApiService categoryApiService = retrofit.create(CategoryApiService.class);
-
-        Call<List<Category>> call = categoryApiService.getCategories();
-        call.enqueue(new Callback<List<Category>>() {
-            @Override
-            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                if (response.isSuccessful()) {
-                    List<Category> categories = response.body();
-                    for (Category category : categories) {
-                        Log.d("Category", "ID: " + category.getId());
-                        Log.d("Category", "Name: " + category.getName());
-                        Log.d("Category", "Description: " + category.getDescription());
-                        Log.d("Category", "Image URL: " + category.getImage());
-                    }
-                } else {
-                    Log.e("API Error", "Failed to fetch data");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.e("API Error", "API call failed", t);
-            }
-        });
+    public void onClickMeHandler(View view) {
+        Intent intent = new Intent(MainActivity.this, CategoriesActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void EraseHandler(View view) {
