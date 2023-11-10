@@ -39,7 +39,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoryCardViewHold
             CategoryItemDTO item = categories.get(position);
             holder.getCategoryName().setText(item.getName());
             Glide.with(HomeApplication.getAppContext())
-                    .load(Urls.BASE + "/images/" + item.getImage())
+                    .load(Urls.LOCAL + "/images/" + item.getImage())
                     .apply(new RequestOptions().override(600))
                     .into(holder.getCategoryImage());
         }

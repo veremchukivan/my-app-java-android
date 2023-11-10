@@ -3,6 +3,22 @@ package com.example.my_app_java_android.dto.auth;
 import okhttp3.RequestBody;
 
 public class LoginDTO {
-    private RequestBody email;
-    private RequestBody password;
+    private String email;
+    private String password;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

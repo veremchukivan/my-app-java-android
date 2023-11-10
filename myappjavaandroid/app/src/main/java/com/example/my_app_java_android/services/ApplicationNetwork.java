@@ -1,6 +1,7 @@
 package com.example.my_app_java_android.services;
 
 import com.example.my_app_java_android.constants.Urls;
+import com.example.my_app_java_android.network.AuthApi;
 import com.example.my_app_java_android.network.CategoriesApi;
 
 import retrofit2.Retrofit;
@@ -13,7 +14,7 @@ public class ApplicationNetwork {
 
     public ApplicationNetwork() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(Urls.BASE)
+                .baseUrl(Urls.LOCAL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
@@ -27,5 +28,7 @@ public class ApplicationNetwork {
     public CategoriesApi getCategoriesApi() {
         return retrofit.create(CategoriesApi.class);
     }
-
+    public AuthApi getAuthApi() {
+        return retrofit.create(AuthApi.class);
+    }
 }
