@@ -11,8 +11,8 @@ namespace WebAPI.Controllers
 {
     [Route("api/accounts")]
     [ApiController]
-    public class AccountController(UserManager<UserEntity> userManager,
-                                   SignInManager<UserEntity> signInManager,
+    public class AccountController(UserManager<UserEntity> userManager, 
+                                   SignInManager<UserEntity> signInManager, 
                                    JwtService jwtService) : ControllerBase
     {
         [HttpPost("register")]

@@ -10,7 +10,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/categories")]
     [ApiController]
-    public class CategoriesController(AppEFContext appEFContext,
+    public class CategoriesController(AppEFContext appEFContext, 
                                       IMapper mapper) : ControllerBase
     {
         [HttpGet("list")]
