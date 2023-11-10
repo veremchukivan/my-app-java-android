@@ -9,19 +9,12 @@ using WebAPI.Models.Account;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/accounts")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController(UserManager<UserEntity> userManager,
+                                   SignInManager<UserEntity> signInManager,
+                                   JwtService jwtService) : ControllerBase
     {
-        private readonly UserManager<UserEntity> _userManager;
-        private readonly SignInManager<UserEntity> _signInManager;
-        private readonly JwtService _jwtService;
-        public AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, JwtService jwtService)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _jwtService = jwtService;
-        }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserViewModel model)
         {
@@ -41,10 +34,10 @@ namespace WebAPI.Controllers
                 Image = imageName,
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                result = await _userManager.AddToRoleAsync(user, Roles.User);
+                result = await userManager.AddToRoleAsync(user, Roles.User);
                 return Ok();
             }
             else
@@ -56,13 +49,13 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<LoginResponseViewModel> Login([FromBody] LoginViewModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await userManager.FindByEmailAsync(model.Email);
 
-            await _signInManager.SignInAsync(user, true);
+            await signInManager.SignInAsync(user, true);
 
             return new LoginResponseViewModel()
             {
-                Token = _jwtService.CreateToken(_jwtService.GetClaims(user))
+                Token = jwtService.CreateToken(jwtService.GetClaims(user))
             };
         }
     }

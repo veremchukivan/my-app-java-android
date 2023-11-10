@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 using WebAPI;
 using WebAPI.Data;
 using WebAPI.Data.Entities.Identity;
@@ -32,7 +34,31 @@ builder.Services.AddJwt(builder.Configuration);
 
 builder.Services.AddScoped<JwtService>();
 
-builder.Services.AddSwaggerGen();
+var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+builder.Services.AddSwaggerGen(c =>
+{
+    var fileDoc = Path.Combine(AppContext.BaseDirectory, $"{assemblyName}.xml");
+    c.IncludeXmlComments(fileDoc);
+    c.AddSecurityDefinition("Bearer",
+        new OpenApiSecurityScheme
+        {
+            Description = "JWT Authorization header using the Bearer schene.",
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer"
+        });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference=new OpenApiReference
+                {
+                    Id="Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            }, new List<string>()
+        }
+    });
+});
 
 builder.Services.AddAutoMapper(typeof(AppMapProfile));
 
@@ -58,8 +84,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/images"
 });
 
-app.UseHttpsRedirection();
-
 app.UseCors(options =>
 {
     options.AllowAnyHeader();
@@ -67,6 +91,7 @@ app.UseCors(options =>
     options.AllowAnyOrigin();
 });
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

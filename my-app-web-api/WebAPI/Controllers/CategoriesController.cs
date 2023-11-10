@@ -10,17 +10,15 @@ namespace WebAPI.Controllers
 {
     [Route("api/categories")]
     [ApiController]
-    public class CategoriesController(AppEFContext appEFContext, IMapper mapper) : ControllerBase
+    public class CategoriesController(AppEFContext appEFContext,
+                                      IMapper mapper) : ControllerBase
     {
-        private readonly AppEFContext _appEFContext = appEFContext;
-        private readonly IMapper _mapper = mapper;
-
         [HttpGet("list")]
         public async Task<IActionResult> Index()
         {
-            var model = await _appEFContext.Categories
+            var model = await appEFContext.Categories
                 .Where(x => x.IsDeleted == false)
-                .Select(x => _mapper.Map<CategoryItemViewModel>(x))
+                .Select(x => mapper.Map<CategoryItemViewModel>(x))
                 .ToListAsync();
 
             return Ok(model);
@@ -29,14 +27,14 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var cat = await _appEFContext.Categories
+            var cat = await appEFContext.Categories
                 .Where(x => x.IsDeleted == false)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
             if (cat == null)
                 return NotFound();
 
-            var model = _mapper.Map<CategoryItemViewModel>(cat);
+            var model = mapper.Map<CategoryItemViewModel>(cat);
             return Ok(model);
         }
 
@@ -45,7 +43,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var cat = _mapper.Map<CategoryEntity>(model);
+                var cat = mapper.Map<CategoryEntity>(model);
 
                 string imageName = String.Empty;
                 if (model.Image != null)
@@ -60,9 +58,9 @@ namespace WebAPI.Controllers
                 }
                 cat.Image = imageName;
 
-                await _appEFContext.Categories.AddAsync(cat);
-                await _appEFContext.SaveChangesAsync();
-                return Ok(_mapper.Map<CategoryItemViewModel>(cat));
+                await appEFContext.Categories.AddAsync(cat);
+                await appEFContext.SaveChangesAsync();
+                return Ok(mapper.Map<CategoryItemViewModel>(cat));
             }
             catch (Exception ex)
             {
@@ -74,7 +72,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var cat = await _appEFContext.Categories
+                var cat = await appEFContext.Categories
                                     .Where(x => x.IsDeleted == false)
                                     .SingleOrDefaultAsync(x => x.Id == model.Id);
 
@@ -84,9 +82,9 @@ namespace WebAPI.Controllers
                 cat.Name = model.Name;
                 cat.Description = model.Description;
                 cat.Image = model.Image;
-                await _appEFContext.SaveChangesAsync();
+                await appEFContext.SaveChangesAsync();
 
-                return Ok(_mapper.Map<CategoryItemViewModel>(cat));
+                return Ok(mapper.Map<CategoryItemViewModel>(cat));
             }
             catch (Exception ex)
             {
@@ -99,7 +97,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var cat = await _appEFContext.Categories
+                var cat = await appEFContext.Categories
                 .Where(x => x.IsDeleted == false)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
@@ -107,7 +105,7 @@ namespace WebAPI.Controllers
                     return NotFound();
 
                 cat.IsDeleted = true;
-                await _appEFContext.SaveChangesAsync();
+                await appEFContext.SaveChangesAsync();
 
                 return Ok();
             }
