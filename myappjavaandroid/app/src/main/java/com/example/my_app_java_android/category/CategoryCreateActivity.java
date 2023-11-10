@@ -42,7 +42,6 @@ public class CategoryCreateActivity extends BaseActivity {
     private String filePath;
     private ImageView ivSelectImage;
     TextInputLayout tlCategoryName;
-
     TextInputLayout tlCategoryDescription;
 
     private final String TAG="CategoryCreateActivity";

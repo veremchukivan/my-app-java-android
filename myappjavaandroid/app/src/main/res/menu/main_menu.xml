@@ -5,4 +5,13 @@
 
     <item android:id="@+id/m_create"
         android:title="Create"/>
+
+    <item android:id="@+id/m_register"
+        android:title="Register"/>
+
+    <item android:id="@+id/m_login"
+        android:title="Login"/>
+
+    <item android:id="@+id/m_logout"
+        android:title="Logout"/>
 </menu>

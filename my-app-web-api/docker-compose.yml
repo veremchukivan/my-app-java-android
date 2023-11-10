@@ -1,8 +1,11 @@
-version: '3.4'
-
-services:
-  webapi:
-    image: ${DOCKER_REGISTRY-}webapi
-    build:
-      context: .
-      dockerfile: WebAPI\Dockerfile
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "webapi": "StartDebugging"
+      }
+    }
+  }
+}

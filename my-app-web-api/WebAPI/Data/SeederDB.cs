@@ -10,7 +10,7 @@ namespace WebAPI.Data
     {
         public static void SeedData(this IApplicationBuilder app)
         {
-            using (var scope = app.ApplicationServices
+            /*using (var scope = app.ApplicationServices
                     .GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppEFContext>();
@@ -76,7 +76,7 @@ namespace WebAPI.Data
                     context.Categories.Add(clothes);
                     context.SaveChanges();
                 }
-            }
+            }*/
         }
     }
 }

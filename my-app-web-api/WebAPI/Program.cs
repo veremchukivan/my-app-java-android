@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using WebAPI;
 using WebAPI.Data;
 using WebAPI.Data.Entities.Identity;
+using WebAPI.Helpers;
 using WebAPI.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +27,11 @@ builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddJwt(builder.Configuration);
+
+builder.Services.AddScoped<JwtService>();
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(AppMapProfile));
